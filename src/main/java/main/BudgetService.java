@@ -3,8 +3,6 @@ package main;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,6 +25,10 @@ public class BudgetService {
         if (start.getYear() == end.getYear() && start.getMonthValue() == end.getMonthValue()) {
             if (start.getDayOfMonth() == end.getDayOfMonth()) {
                 return getSingleDayBudget(start);
+            }
+            final int intervalDays = end.getDayOfMonth() - start.getDayOfMonth();
+            if (intervalDays > 0) {
+                return getSingleDayBudget(start) * (intervalDays + 1);
             }
             return getEntireMonth(start, allBudgets);
         }
