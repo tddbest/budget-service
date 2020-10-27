@@ -48,4 +48,13 @@ public class BudgetServiceTest {
                                        LocalDate.of(2020, 10, 31))).isEqualTo(3400.0);
 
     }
+
+    @Test
+    public void test_one_day() {
+        when(repo.getAll()).thenReturn(Collections.singletonList(new Budget("202009", 300)));
+        BudgetService budgetService = new BudgetService(repo);
+        assertThat(budgetService.query(LocalDate.of(2020, 9, 1),
+                                       LocalDate.of(2020, 9, 1))).isEqualTo(10.0);
+
+    }
 }

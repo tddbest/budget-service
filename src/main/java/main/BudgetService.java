@@ -3,8 +3,12 @@ package main;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 public class BudgetService {
     private final IBudgetRepo repo;
     private Map<String, Budget> budgetMap;
@@ -18,7 +22,12 @@ public class BudgetService {
             return 0;
         }
         List<Budget> allBudgets = repo.getAll();
+        budgetMap = allBudgets.stream()
+                  .collect(Collectors.toMap(budget -> budget.getYearMonth(), budget -> budget));
         if (start.getYear() == end.getYear() && start.getMonthValue() == end.getMonthValue()) {
+            if (start.getDayOfMonth() == end.getDayOfMonth()) {
+                return getSingleDayBudget(start);
+            }
             return getEntireMonth(start, allBudgets);
         } else {
             int currentMonth = start.getMonthValue();
