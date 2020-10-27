@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="main.BudgetServiceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2020-10-27T09:01:12" hostname="TW-LW12556-M.local" time="0.309">
+  <properties/>
+  <testcase name="test_illegal_input" classname="main.BudgetServiceTest" time="0.295"/>
+  <testcase name="test_one_month" classname="main.BudgetServiceTest" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
