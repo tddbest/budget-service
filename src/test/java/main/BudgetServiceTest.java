@@ -6,9 +6,7 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.stream.Collectors;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -16,10 +14,12 @@ import org.mockito.Mockito;
 public class BudgetServiceTest {
 
     IBudgetRepo repo;
+    BudgetService budgetService;
 
     @Before
     public void setUp() throws Exception {
         repo = Mockito.mock(IBudgetRepo.class);
+        budgetService = new BudgetService(repo);
     }
 
     @Test
@@ -42,7 +42,8 @@ public class BudgetServiceTest {
 
     @Test
     public void test_two_entire_months() {
-        when(repo.getAll()).thenReturn(Arrays.asList(new Budget("202009", 300), new Budget("202010", 3100)));
+        when(repo.getAll()).thenReturn(Arrays.asList(new Budget("202009", 300),
+                                                     new Budget("202010", 3100)));
         BudgetService budgetService = new BudgetService(repo);
         assertThat(budgetService.query(LocalDate.of(2020, 9, 1),
                                        LocalDate.of(2020, 10, 31))).isEqualTo(3400.0);
@@ -55,6 +56,13 @@ public class BudgetServiceTest {
         BudgetService budgetService = new BudgetService(repo);
         assertThat(budgetService.query(LocalDate.of(2020, 9, 1),
                                        LocalDate.of(2020, 9, 1))).isEqualTo(10.0);
+    }
+
+    @Test
+    public void test_incomplete_month(){
+        when(repo.getAll()).thenReturn(Collections.singletonList(new Budget("202009", 300)));
+        assertThat(budgetService.query(LocalDate.of(2020, 9, 1),
+                                       LocalDate.of(2020, 9, 23))).isEqualTo(230.0);
 
     }
 }
