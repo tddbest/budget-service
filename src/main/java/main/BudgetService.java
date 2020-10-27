@@ -5,6 +5,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class BudgetService {
@@ -44,10 +45,11 @@ public class BudgetService {
     }
 
     private int getEntireMonth(LocalDate start, List<Budget> allBudgets) {
-        return allBudgets.stream()
-                         .filter(budget -> budget.getYearMonth()
-                                                 .equals(getYearMonthOfDate(start)))
-                         .findFirst().get().getAmount();
+        final Optional<Budget> result = allBudgets.stream()
+                                                  .filter(budget -> budget.getYearMonth()
+                                                                    .equals(getYearMonthOfDate(start)))
+                                                  .findFirst();
+        return result.isPresent() ? result.get().getAmount() : 0;
     }
 
     private String getYearMonthOfDate(LocalDate date) {
@@ -55,8 +57,7 @@ public class BudgetService {
     }
 
     private double getFirstMonthBudget(LocalDate start) {
-        int dayOfMonth = start.getDayOfMonth();
-        int dayCount = getNumberOfDay(start) - dayOfMonth + 1;
+        int dayCount = getNumberOfDay(start) - start.getDayOfMonth() + 1;
         return getSingleDayBudget(start) * dayCount;
     }
 
