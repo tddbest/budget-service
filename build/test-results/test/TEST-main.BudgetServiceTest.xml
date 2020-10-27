@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="main.BudgetServiceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2020-10-27T09:31:07" hostname="TW-LW11656-M.local" time="0.381">
+<testsuite name="main.BudgetServiceTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2020-10-27T09:47:36" hostname="TW-LW11656-M.local" time="0.291">
   <properties/>
-  <testcase name="test_two_entire_months" classname="main.BudgetServiceTest" time="0.379"/>
+  <testcase name="test_two_entire_months" classname="main.BudgetServiceTest" time="0.289"/>
   <testcase name="test_incomplete_month" classname="main.BudgetServiceTest" time="0.001"/>
   <testcase name="test_illegal_input" classname="main.BudgetServiceTest" time="0.0"/>
-  <testcase name="test_one_day" classname="main.BudgetServiceTest" time="0.0"/>
+  <testcase name="test_partial_months" classname="main.BudgetServiceTest" time="0.0"/>
+  <testcase name="test_one_day" classname="main.BudgetServiceTest" time="0.001"/>
   <testcase name="test_one_month" classname="main.BudgetServiceTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

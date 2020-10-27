@@ -48,6 +48,15 @@ public class BudgetServiceTest {
     }
 
     @Test
+    public void test_partial_months() {
+        when(repo.getAll()).thenReturn(Arrays.asList(new Budget("202009", 300),
+                                                     new Budget("202010", 3100)));
+        assertThat(budgetService.query(LocalDate.of(2020, 9, 30),
+                                       LocalDate.of(2020, 10, 3))).isEqualTo(310.0);
+
+    }
+
+    @Test
     public void test_one_day() {
         when(repo.getAll()).thenReturn(Collections.singletonList(new Budget("202009", 300)));
         assertThat(budgetService.query(LocalDate.of(2020, 9, 1),
