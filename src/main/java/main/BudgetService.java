@@ -5,9 +5,6 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-
-import lombok.RequiredArgsConstructor;
-
 public class BudgetService {
     private final IBudgetRepo repo;
     private Map<String, Budget> budgetMap;
@@ -21,12 +18,26 @@ public class BudgetService {
             return 0;
         }
         List<Budget> allBudgets = repo.getAll();
+        if (start.getYear() == end.getYear() && start.getMonthValue() == end.getMonthValue()) {
+            return getEntireMonth(start, allBudgets);
+        } else {
+            int currentMonth = start.getMonthValue();
+            double ans = 0;
+            while (currentMonth < end.getMonthValue() + 1) {
+                ans += getEntireMonth(LocalDate.of(start.getYear(), currentMonth, 1), allBudgets);
+                currentMonth++;
+            }
+            return ans;
+        }
+        //LocalDate current = ;
+        //return 0;
+    }
+
+    private int getEntireMonth(LocalDate start, List<Budget> allBudgets) {
         return allBudgets.stream()
                          .filter(budget -> budget.getYearMonth()
                                                  .equals(getYearMonthOfDate(start)))
                          .findFirst().get().getAmount();
-        //LocalDate current = ;
-        //return 0;
     }
 
     private String getYearMonthOfDate(LocalDate date) {

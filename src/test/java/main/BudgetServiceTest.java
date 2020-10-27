@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,15 @@ public class BudgetServiceTest {
         BudgetService budgetService = new BudgetService(repo);
         assertThat(budgetService.query(LocalDate.of(2020, 10, 1),
                                        LocalDate.of(2020, 9, 30))).isEqualTo(0.0);
+
+    }
+
+    @Test
+    public void test_two_entire_months() {
+        when(repo.getAll()).thenReturn(Arrays.asList(new Budget("202009", 300), new Budget("202010", 3100)));
+        BudgetService budgetService = new BudgetService(repo);
+        assertThat(budgetService.query(LocalDate.of(2020, 9, 1),
+                                       LocalDate.of(2020, 10, 31))).isEqualTo(3400.0);
 
     }
 }
