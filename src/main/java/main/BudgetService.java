@@ -29,17 +29,19 @@ public class BudgetService {
                 return getSingleDayBudget(start);
             }
             return getEntireMonth(start, allBudgets);
-        } else {
-            int currentMonth = start.getMonthValue();
-            double ans = 0;
-            while (currentMonth < end.getMonthValue() + 1) {
-                ans += getEntireMonth(LocalDate.of(start.getYear(), currentMonth, 1), allBudgets);
-                currentMonth++;
-            }
-            return ans;
         }
-        //LocalDate current = ;
-        //return 0;
+
+        double ans = getFirstMonthBudget(start) + getLastMonthBudget(end);
+        LocalDate current = LocalDate.of(start.getYear(), start.getMonthValue(), 1);
+        current = current.plusMonths(1);
+        while (true) {
+            if (current.getYear() == end.getYear() && current.getMonthValue() == end.getMonthValue()) {
+                break;
+            }
+            ans += getEntireMonth(current, allBudgets);
+            current.plusMonths(1);
+        }
+        return ans;
     }
 
     private int getEntireMonth(LocalDate start, List<Budget> allBudgets) {
@@ -55,16 +57,23 @@ public class BudgetService {
 
     private double getFirstMonthBudget(LocalDate start) {
         int dayOfMonth = start.getDayOfMonth();
-        return 0;
+        int dayCount = getNumberOfDay(start) - dayOfMonth + 1;
+        return getSingleDayBudget(start) * dayCount;
     }
 
-    private double getLastMonthBudget(LocalDate end) {return 0;}
+    private double getLastMonthBudget(LocalDate end) {
+        return getSingleDayBudget(end) * end.getDayOfMonth();
+    }
 
     private double getSingleDayBudget(LocalDate date) {
         int budgetOfMonth = budgetMap.get(getYearMonthOfDate(date)) == null ?
                             0 : budgetMap.get(getYearMonthOfDate(date)).getAmount();
-        YearMonth yearMonthObj = YearMonth.of(date.getYear(), date.getMonthValue());
-        int numberOfDay = yearMonthObj.lengthOfMonth();
+        int numberOfDay = getNumberOfDay(date);
         return budgetOfMonth/numberOfDay;
+    }
+
+    private int getNumberOfDay(LocalDate date) {
+        YearMonth yearMonthObj = YearMonth.of(date.getYear(), date.getMonthValue());
+        return yearMonthObj.lengthOfMonth();
     }
 }
