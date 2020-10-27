@@ -8,12 +8,18 @@ import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 public class BudgetService {
     private final IBudgetRepo repo;
     private Map<String, Budget> budgetMap;
 
+    public BudgetService(IBudgetRepo repo) {
+        this.repo = repo;
+    }
+
     public double query(LocalDate start, LocalDate end) {
+        if (start.isAfter(end)) {
+            return 0;
+        }
         List<Budget> allBudgets = repo.getAll();
         return allBudgets.stream()
                          .filter(budget -> budget.getYearMonth()
